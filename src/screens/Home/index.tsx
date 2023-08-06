@@ -2,7 +2,8 @@ import {
   Container,
   Header,
   HeaderContent,
-  TotalCars
+  TotalCars,
+  CarList
 } from "./styles";
 import { StatusBar } from 'react-native'
 import { RFValue } from "react-native-responsive-fontsize";
@@ -21,17 +22,6 @@ export function Home() {
     thumbnail: "https://img.sm360.ca/ir/w640h390c/images/newcar/ca/2022/audi/rs-7-sportback/base-rs-7-sportback/sedan/exteriorColors/2022_audi_rs-7-sportback_base_001_t3t3.png"
   }
 
-  const carDataTwo = {
-    brand: 'Porche',
-    name: 'PANAMERA',
-    rent: {
-      period: 'AO DIA',
-      price: 300
-    },
-    thumbnail: "https://www.pngplay.com/wp-content/uploads/13/Porsche-Panamera-No-Background.png"
-  }
-
-
   return (
     <Container>
       <StatusBar
@@ -47,8 +37,12 @@ export function Home() {
           </TotalCars>
         </HeaderContent>
       </Header>
-      <Car data={ carDataOne } />
-      <Car data={ carDataTwo } />
+      <CarList
+        data={[1,2,3,4,5,6,7]}
+        keyExtractor={item => String(item)}
+        renderItem={({ item }) => <Car data={ carDataOne } />}
+      />
+
     </Container>
   )
 }

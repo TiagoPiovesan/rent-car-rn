@@ -6,6 +6,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import theme from './src/styles/theme';
+import { CarDetails } from './src/screens/CarDetails';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,10 +44,10 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <View
+      <SafeAreaProvider
         style={{ flex: 1 }} onLayout={onLayoutRootView}>
-        <Home />
-      </View>
+        <CarDetails />
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
