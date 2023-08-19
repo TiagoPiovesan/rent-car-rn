@@ -25,12 +25,21 @@ import GasolineSvg from '../../assets/gasoline.svg';
 import ExchangeSvg from '../../assets/exchange.svg';
 import PeopleSvg from '../../assets/people.svg';
 import Button from '../../components/Button';
+import { useNavigation } from '@react-navigation/native';
+import { SchedulingDetails } from '../SchedulingDetails/index';
+import { Scheduling } from '../Scheduling/index';
 
 export function CarDetails() {
+  const navigation = useNavigation()
+
+  function handleConfirmRental(){
+    navigation.navigate('Scheduling')
+  }
+
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => {}} />
+        <BackButton onPress={() => {navigation.goBack()}} />
       </Header>
 
       <CarImages>
@@ -65,7 +74,7 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" />
+        <Button title="Escolher período do aliguel" onPress={handleConfirmRental} />
       </Footer>
 
     </Container>

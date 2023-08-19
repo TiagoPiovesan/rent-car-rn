@@ -6,11 +6,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import theme from './src/styles/theme';
-import { CarDetails } from './src/screens/CarDetails';
+import { Routes } from './src/routes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Scheduling } from './src/screens/Scheduling';
-import { SchedulingDetails } from './src/screens/SchedulingDetails';
-import { SchedulingComplete } from './src/screens/SchedulingComplete';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -49,7 +46,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <SafeAreaProvider
         style={{ flex: 1 }} onLayout={onLayoutRootView}>
-        <SchedulingComplete />
+        <Routes />
       </SafeAreaProvider>
     </ThemeProvider>
   );
