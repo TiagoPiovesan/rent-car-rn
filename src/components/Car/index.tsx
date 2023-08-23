@@ -13,19 +13,11 @@ import {
 
 import GasolineSvg from '../../assets/gasoline.svg'
 import { TouchableOpacityProps } from 'react-native';
+import { CarDTO } from '../../dtos/CarDTO'
 
-interface CarData {
-  brand: string;
-  name: string;
-  rent: {
-    period: string;
-    price: number;
-  };
-  thumbnail: string;
-}
 
 interface Props extends TouchableOpacityProps {
- data: CarData;
+ data: CarDTO;
 }
 
 export default function Car({ data, ...rest }: Props) {

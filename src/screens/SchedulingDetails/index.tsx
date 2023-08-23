@@ -1,4 +1,4 @@
-import Acessory from '../../components/Acessory';
+import Acessory from '../../components/Accessory';
 import BackButton from '../../components/BackButton';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';

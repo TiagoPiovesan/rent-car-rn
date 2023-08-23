@@ -10,7 +10,7 @@ interface Props {
   icon: React.FC<SvgProps>
 }
 
-export default function Acessory({
+export default function Accessory({
   name,
   icon: Icon
 }: Props) {

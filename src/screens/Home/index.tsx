@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react'
 import {
   Container,
   Header,
@@ -10,23 +11,40 @@ import { RFValue } from "react-native-responsive-fontsize";
 
 import Logo from '../../assets/logo.svg';
 import Car from "../../components/Car";
+import Load from '../../components/Load'
+
 import { useNavigation } from "@react-navigation/native";
 
+import { api } from "../../services/api";
+import { CarDTO } from "../../dtos/CarDTO"
+
+import Skeleton from 'react-loading-skeleton'
+
+
 export function Home() {
+  const [cars, setCars] = useState<CarDTO[]>([])
+  const [loading, setLoading] = useState(true)
   const navigation = useNavigation();
 
-  const carDataOne = {
-    brand: 'Audi',
-    name: 'RS 5 Caupé',
-    rent: {
-      period: 'AO DIA',
-      price: 120
-    },
-    thumbnail: "https://img.sm360.ca/ir/w640h390c/images/newcar/ca/2022/audi/rs-7-sportback/base-rs-7-sportback/sedan/exteriorColors/2022_audi_rs-7-sportback_base_001_t3t3.png"
-  }
+  useEffect(() => {
+    async function fetchCars(){
+      try {
+        const response = await api.get('/cars')
+        setCars(response.data)
 
-  function handleCarDetails() {
-    navigation.navigate('CarDetails')
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchCars()
+  }, [])
+
+
+  function handleCarDetails(car: CarDTO) {
+    navigation.navigate('CarDetails', { car })
   }
 
   return (
@@ -44,11 +62,17 @@ export function Home() {
           </TotalCars>
         </HeaderContent>
       </Header>
-      <CarList
-        data={[1,2,3,4,5,6,7]}
-        keyExtractor={item => String(item)}
-        renderItem={({ item }) => <Car data={ carDataOne } onPress={handleCarDetails} />}
-      />
+
+      { loading ? <Load /> :
+        <CarList
+          data={cars}
+          keyExtractor={item => item.id}
+          renderItem={
+            ({ item }) =>
+              <Car data={ item } onPress={() => handleCarDetails(item)} />
+          }
+        />
+      }
 
     </Container>
   )
