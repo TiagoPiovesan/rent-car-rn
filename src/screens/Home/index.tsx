@@ -18,8 +18,6 @@ import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO"
 
-import Skeleton from 'react-loading-skeleton'
-
 
 export function Home() {
   const [cars, setCars] = useState<CarDTO[]>([])

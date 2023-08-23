@@ -18,17 +18,13 @@ import {
   Footer
 } from './styles';
 
-import SpeedSvg from '../../assets/speed.svg';
-import AccelerationSvg from '../../assets/acceleration.svg';
-import ForceSvg from '../../assets/force.svg';
-import GasolineSvg from '../../assets/gasoline.svg';
-import ExchangeSvg from '../../assets/exchange.svg';
-import PeopleSvg from '../../assets/people.svg';
+
 import Button from '../../components/Button';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SchedulingDetails } from '../SchedulingDetails/index';
 import { Scheduling } from '../Scheduling/index';
 import { CarDTO } from '../../dtos/CarDTO';
+import { getAcessotyIcon } from '../../utils/getAcessotyIcon';
 
 interface Params {
   car: CarDTO;
@@ -69,9 +65,9 @@ export function CarDetails() {
           {
             car.accessories.map(acessory => (
               <Accessory
-              type={acessory.type}
-              name={acessory.name}
-              icon={SpeedSvg} />
+                key={acessory.type}
+                name={acessory.name}
+                icon={getAcessotyIcon(acessory.type)} />
             ))
           }
         </Acessories>
