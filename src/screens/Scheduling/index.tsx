@@ -19,9 +19,17 @@ import { Calendar, DayProps, MarkedDateProps, generateInterval } from '../../com
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 
+interface RentalPeriodProps {
+  start: number;
+  startFormatted: string;
+  end: number;
+  endFormatted: string;
+}
+
 export function Scheduling() {
   const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps)
   const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps)
+  const [ rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>()
 
   const theme = useTheme();
   const navigation = useNavigation();
