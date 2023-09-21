@@ -1,4 +1,9 @@
 {
-  "compilerOptions": {},
+  "baseUrl": "./src",
+  "checkjs": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6"
+  },
   "extends": "expo/tsconfig.base"
 }

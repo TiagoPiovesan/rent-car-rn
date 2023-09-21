@@ -51,10 +51,10 @@ export const DateValue = styled.Text<DateValueProps>`
   color: ${({ theme }) => theme.colors.shape };
   font-family: ${({ theme }) => theme.fonts.primary_500 };
   font-size: ${RFValue(15)}px;
-  /* ${({ selected, theme }) => !selected && css`
+  ${({ selected, theme }) => !selected && css`
     border-bottom: 1px solid ${ theme.colors.text };
     padding-bottom: 5px;
-  `} */
+  `}
 `
 
 export const Content = styled.ScrollView.attrs({
