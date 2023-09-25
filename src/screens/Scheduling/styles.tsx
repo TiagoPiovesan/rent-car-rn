@@ -14,9 +14,7 @@ export const Container = styled.View`
 export const Header = styled(SafeAreaView)`
   width: 100%;
   height: 325px;
-
   background-color: ${({ theme }) => theme.colors.header };
-
   justify-content: center;
   padding: 25px;
   padding-top: 40px;
@@ -26,7 +24,6 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.shape };
   font-family: ${({ theme }) => theme.fonts.secondary_600 };
   font-size: ${RFValue(32)}px;
-
 `
 
 export const RentalPeriod = styled.View`
@@ -62,9 +59,7 @@ export const Content = styled.ScrollView.attrs({
     paddingBottom: 24
   },
   showsVerticalScrollIndicator: false
-})`
-
-`
+})``
 
 export const Footer = styled.View`
   padding: 24px;
