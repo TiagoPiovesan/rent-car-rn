@@ -7,27 +7,46 @@ import { Feather } from '@expo/vector-icons'
 import { useState } from 'react'
 
 interface InputProps extends TextInputProps {
-  iconName: React.ComponentProps<typeof Feather>['name']
+  iconName: React.ComponentProps<typeof Feather>['name'],
+  value?: string
 }
 
-export default function PasswordInput({ iconName, ...rest }: InputProps) {
+export default function PasswordInput({ iconName, value, ...rest }: InputProps) {
   const theme = useTheme()
   const [keyVisible, setKeyVisible] = useState(true)
+
+  const [isFocus, setIsFocus] = useState(false)
+  const [isFilled, setIsFilled] = useState(false)
+
+  function handleInputFocus() {
+    setIsFocus(true)
+  }
+
+  function handleInputBlur() {
+    setIsFocus(false)
+    setIsFilled(!!value)
+  }
 
   function handleKeyVisible() {
     setKeyVisible(!keyVisible)
   }
 
   return (
-    <Container>
+    <Container isFocused={isFocus}>
       <InputContainer>
         <Feather
           name={iconName}
           size={24}
-          color={theme.colors.text_detail}
+          color={isFocus || isFilled ? theme.colors.main : theme.colors.text_detail}
         />
       </InputContainer>
-      <InputText {...rest} secureTextEntry={keyVisible} />
+
+      <InputText
+        {...rest}
+        secureTextEntry={keyVisible}
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
+      />
 
       <BorderlessButton onPress={handleKeyVisible}>
         <InputContainer>
