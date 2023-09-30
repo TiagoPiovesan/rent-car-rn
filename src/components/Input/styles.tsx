@@ -5,13 +5,9 @@ interface ContainerProps {
   isFocused: boolean;
 }
 
-export const Container = styled.View<ContainerProps>`
+export const Container = styled.View`
   flex-direction: row;
   margin-bottom: 8px;
-  ${({ theme, isFocused }) => isFocused && css`
-    border-bottom-width: 2px;
-    border-bottom-color: ${theme.colors.main};
-  ` }
 `
 
 export const InputContainer = styled.View`
@@ -21,13 +17,21 @@ export const InputContainer = styled.View`
   align-items: center;
   background-color: ${({ theme }) => theme.colors.background_secondary};
   margin-right: 2px;
+   ${({ theme, isFocused }) => isFocused && css`
+    border-bottom-width: 2px;
+    border-bottom-color: ${theme.colors.main};
+  ` }
 `
 
-export const InputText = styled.TextInput`
+export const InputText = styled.TextInput<ContainerProps>`
  flex: 1;
  background-color: ${({ theme }) => theme.colors.background_secondary};
  color: ${({ theme }) => theme.colors.text};
  font-family: ${({ theme }) => theme.fonts.primary_400};
  font-size: ${RFValue(15)}px;
  padding: 0 23px;
+ ${({ theme, isFocused }) => isFocused && css`
+    border-bottom-width: 2px;
+    border-bottom-color: ${theme.colors.main};
+  ` }
 `
