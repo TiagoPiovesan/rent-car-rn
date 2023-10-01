@@ -21,8 +21,6 @@ import {
 
 import Button from '../../components/Button';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { SchedulingDetails } from '../SchedulingDetails/index';
-import { Scheduling } from '../Scheduling/index';
 import { CarDTO } from '../../dtos/CarDTO';
 import { getAcessotyIcon } from '../../utils/getAcessotyIcon';
 

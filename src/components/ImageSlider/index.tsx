@@ -1,7 +1,7 @@
+import Bullet from '../Bullet';
 import {
   Container,
   ImageIndexes,
-  ImageIndex,
   CarImageWrapper,
   CarImage
 } from './styles'
@@ -14,10 +14,10 @@ export default function ImageSlider({ imagesUrl }: Props) {
   return (
     <Container>
       <ImageIndexes>
-        <ImageIndex active={true} />
-        <ImageIndex active={false} />
-        <ImageIndex active={false} />
-        <ImageIndex active={false} />
+        <Bullet active={true} />
+        <Bullet active={false} />
+        <Bullet active={false} />
+        <Bullet active={false} />
       </ImageIndexes>
 
       <CarImageWrapper>

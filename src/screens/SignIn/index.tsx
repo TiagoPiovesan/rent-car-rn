@@ -19,10 +19,12 @@ import {
 } from 'react-native';
 import { useState } from 'react'
 import * as Yup from 'yup'
+import { useNavigation } from '@react-navigation/native';
 
 export function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassowrd] = useState('')
+  const navigation = useNavigation()
 
   async function handleSignIn() {
     try{
@@ -42,6 +44,10 @@ export function SignIn() {
         Alert.alert("Error na autenticação", "Ocorreu um erro ao fazer login, verifique as credenciais")
       }
     }
+  }
+
+  function handleNewAccount() {
+    navigation.navigate("SignUpFirstStep")
   }
 
   return (
@@ -92,8 +98,8 @@ export function SignIn() {
           <Button
             title='Criar conta gratuíta'
             color={theme.colors.background_secondary}
-            onPress={() => { }}
-            enabled={false}
+            onPress={handleNewAccount}
+            enabled={true}
             loading={false}
             light
           />
