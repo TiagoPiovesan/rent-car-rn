@@ -1,9 +1,9 @@
 import { Container } from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components';
-import { TouchableOpacityProps } from 'react-native';
+import { RectButtonProps } from 'react-native-gesture-handler';
 
-interface Props extends TouchableOpacityProps {
+interface Props extends RectButtonProps {
   color?: string;
 }
 

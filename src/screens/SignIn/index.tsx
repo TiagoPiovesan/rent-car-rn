@@ -20,23 +20,27 @@ import {
 import { useState } from 'react'
 import * as Yup from 'yup'
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassowrd] = useState('')
   const navigation = useNavigation()
+  const { signIn } = useAuth()
 
   async function handleSignIn() {
     try{
-    const schema = Yup.object().shape({
-      email: Yup.string()
-        .required("E-mail obrigatório")
-        .email("E-mail inválido"),
-      password: Yup.string()
-        .required("E-password obrigatório")
-    })
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .required("E-mail obrigatório")
+          .email("E-mail inválido"),
+        password: Yup.string()
+          .required("E-password obrigatório")
+      })
 
       await schema.validate({ email, password })
+
+      signIn({ email, password })
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert(error.message)

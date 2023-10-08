@@ -93,7 +93,7 @@ export const CarFooterDate = styled.Text`
 export const ArrowIcon = styled(AntDesign).attrs({
   name: "arrowright"
 })`
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
   margin: 0 10px;
   color: ${({ theme }) => theme.colors.text };
 `
