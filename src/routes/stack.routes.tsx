@@ -23,7 +23,7 @@ export function StackRoutes(){
         // presentation: 'modal',
         animationEnabled: true,
       }}
-      initialRouteName="SignIn"
+      initialRouteName="Home"
       >
       <Screen
         name="Splash"

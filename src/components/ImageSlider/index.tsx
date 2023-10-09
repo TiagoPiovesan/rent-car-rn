@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import Bullet from '../Bullet';
 import {
   Container,
@@ -5,27 +6,57 @@ import {
   CarImageWrapper,
   CarImage
 } from './styles'
+import { ViewToken } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 interface Props {
-  imagesUrl: string[];
+  imagesUrl: {
+    id: string;
+    photo: string;
+  }[];
+}
+
+interface ChangeImageProps {
+  viewableItems: ViewToken[];
+  changed: ViewToken[];
 }
 
 export default function ImageSlider({ imagesUrl }: Props) {
+  const [imageIndex, setImageIndex] = useState(0)
+
+  const indexChanged = useRef((info: ChangeImageProps) => {
+    const index = info.viewableItems[0].index!;
+    setImageIndex(index);
+  });
+
   return (
     <Container>
       <ImageIndexes>
-        <Bullet active={true} />
-        <Bullet active={false} />
-        <Bullet active={false} />
-        <Bullet active={false} />
+        {
+          imagesUrl.map((item, index) => (
+            <Bullet
+              key={String(item.id)}
+              active={index === imageIndex}
+            />
+          ))
+        }
       </ImageIndexes>
 
-      <CarImageWrapper>
-        <CarImage
-          source={{ uri: imagesUrl[0] }}
-          resizeMode="contain"
-        />
-      </CarImageWrapper>
+      <FlatList
+        data={imagesUrl}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <CarImageWrapper>
+            <CarImage
+              source={{ uri: item.photo }}
+              resizeMode="contain"
+            />
+          </CarImageWrapper>
+        )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={indexChanged.current}
+      />
     </Container>
   )
 }
