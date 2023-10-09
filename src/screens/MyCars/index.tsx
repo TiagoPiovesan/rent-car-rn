@@ -61,7 +61,7 @@ export function MyCars() {
           translucent
           backgroundColor="transparent"
         />
-        <BackButton onPress={() => {navigation.goBack()}} color={ theme.colors.shape } />
+        {/* <BackButton onPress={() => {navigation.goBack()}} color={ theme.colors.shape } /> */}
         <Title>
           Escolha uma {'\n'}
           data de início e {'\n'}
