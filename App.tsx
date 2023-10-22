@@ -3,16 +3,20 @@ import { Home } from './src/screens/Home';
 import { Archivo_400Regular, Archivo_500Medium, Archivo_600SemiBold } from '@expo-google-fonts/archivo'
 import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter'
 import * as SplashScreen from 'expo-splash-screen';
-import { View } from 'react-native';
+import { View, LogBox } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import theme from './src/styles/theme';
 import { Routes } from './src/routes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppProvider } from './src/hooks';
 
+
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+    LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+
     const [fontsLoaded] = useFonts({
       Archivo_400Regular,
       Archivo_500Medium,

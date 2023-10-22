@@ -1831,9 +1831,9 @@
   integrity sha512-uKJOW4sQi3neCmgKhqLr0IJKlb2y5q2p05U5CEDJrCxSyD2uVYvSdh7IMrPjF4sWtzc/Lnk462M4vde7Dn5NSw==
 
 "@nozbe/watermelondb@^0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.27.0.tgz#d624415db61e0c8e30b3140accdcb44ddf38c27f"
-  integrity sha512-CKtlCTlo/tj7nJxd4wYFSA0tSxQn+8SpkRa+IOo5+hSPYT5JifBZDWa3/YEElfqCs2RCMrD10zHnxOimkOLLpw==
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.27.1.tgz#06fdae74c986a9149fb7bfc52ae41da4b99d802b"
+  integrity sha512-41Nlq0FMGkcr2CUgtPRQRVAbA8VYI6fpeGlX4eoiLhoh3nbPIlX4RIcjLIEoyGgkCUSNSnNvXrv0RMIJRl4nZQ==
   dependencies:
     "@babel/runtime" "7.21.0"
     "@nozbe/simdjson" "3.1.0-wmelon1"

@@ -2,6 +2,7 @@
   "baseUrl": "./src",
   "checkjs": true,
   "compilerOptions": {
+    "experimentalDecorators": true,
     "module": "commonjs",
     "target": "es6"
   },
