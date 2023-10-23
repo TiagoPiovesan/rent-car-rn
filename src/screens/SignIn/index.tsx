@@ -27,7 +27,7 @@ export function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassowrd] = useState('')
   const navigation = useNavigation()
-  const { signIn } = useAuth()
+  const { signIn, error } = useAuth()
 
   async function handleSignIn() {
     try{
@@ -40,8 +40,10 @@ export function SignIn() {
       })
 
       await schema.validate({ email, password })
-
       signIn({ email, password })
+      if (error) {
+        Alert.alert(error)
+      }
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert(error.message)
