@@ -1,18 +1,19 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { api } from "../services/api";
 
+import { database } from "../database";
+import axios from "axios";
+
+import { User as ModelUser } from "../database/model/User";
 
 interface User {
   id: string;
+  user_id: string;
   email: string;
   name: string;
   driver_license: string;
   avatar: string;
-}
-
-interface AuthState {
   token: string;
-  user: User;
 }
 
 interface SignInCredentials {
@@ -33,7 +34,7 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [data, setData] = useState<AuthState>({} as AuthState)
+  const [data, setData] = useState<User>({} as User)
   const [error, setError] = useState<string | null>(null);
 
   async function signIn({ email, password }: SignInCredentials) {
@@ -41,18 +42,48 @@ function AuthProvider({ children }: AuthProviderProps) {
       const response = await api.post("/sessions", { email, password });
       const { token, user } = response.data;
       api.defaults.headers.authorization = `Bearer ${token}`;
-      setData({ token, user });
+
+      console.log(user)
+      await database.write(async () => {
+        const userCollection = await database.get<ModelUser>('users')
+          .create(newUser => {
+            newUser.user_id = user.id,
+              newUser.email = user.email,
+              newUser.name = user.name,
+              newUser.driver_license = user.driver_license,
+              newUser.avatar = user.avatar,
+              newUser.token = token
+          })
+      })
+
+      setData({...user, token });
     } catch (error) {
-      if (error.response.status === 500) {
-        setError("An internal server error occurred. Please try again later.");
+      if (error instanceof axios.AxiosError) {
+        if (error.response.status === 500) {
+          setError(error.response.data.message || "An error occurred. Please try again.");
+        }
       } else {
-        setError(error.response.data.message || "An error occurred. Please try again.");
+        throw new Error(error)
       }
     }
   }
 
+  useEffect(() => {
+    async function loadUserData() {
+      const userCollection = database.get<ModelUser>('users')
+      const response = await userCollection.query().fetch();
+
+      if (response.length > 0) {
+        const userData = response[0]._raw as unknown as User;
+        api.defaults.headers.authorization = `Bearer ${userData.token}`;
+        setData(userData)
+      }
+    }
+    loadUserData()
+  }, [])
+
   return (
-    <AuthContext.Provider value={{user: data.user, signIn, error}}>
+    <AuthContext.Provider value={{user: data, signIn, error}}>
       { children }
     </AuthContext.Provider>
   )
