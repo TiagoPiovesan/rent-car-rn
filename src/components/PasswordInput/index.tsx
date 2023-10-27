@@ -43,6 +43,7 @@ export default function PasswordInput({ iconName, value, ...rest }: InputProps) 
 
       <InputText
         {...rest}
+        autoCorrect={false}
         secureTextEntry={keyVisible}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}

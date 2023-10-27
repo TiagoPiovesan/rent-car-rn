@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import { Home } from '../screens/Home'
 import { MyCars } from '../screens/MyCars';
+import { Profile } from '../screens/Profile';
 import { AppStackRoutes } from './app.stack.routes';
 import { useTheme } from 'styled-components'
 import { Platform } from 'react-native'
@@ -50,7 +51,7 @@ export function AppTabRoutes() {
       />
         <Screen
         name="Profile"
-        component={Home}
+        component={Profile}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={"users"} size={24} color={color} />
