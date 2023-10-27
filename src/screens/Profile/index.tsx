@@ -24,12 +24,17 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import PasswordInput from '../../components/PasswordInput';
 import { useAuth } from '../../hooks/auth';
+import * as ImagePicker from 'expo-image-picker';
 
 export function Profile() {
-  const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit')
+  const { user } = useAuth()
   const theme = useTheme()
   const navigation = useNavigation()
-  const { user } = useAuth()
+
+  const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit')
+  const [avatar, setAvatar] = useState(user.avatar)
+  const [name, setName] = useState(user.name)
+  const [driverLicense, setDriverLicense] = useState(user.driver_license)
 
   function handleBack() {
     navigation.goBack()
@@ -41,6 +46,18 @@ export function Profile() {
 
   function handleChangeForm(selected: 'dataEdit' | 'passwordEdit') {
     setOption(selected);
+  }
+
+  async function handleSelectAvatar() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1
+    })
+    if (!result.canceled) {
+      setAvatar(result.assets[0].uri)
+    }
   }
 
   return (
@@ -57,8 +74,8 @@ export function Profile() {
             </HeaderTop>
 
             <PhotoContainer>
-              <Photo source={{ uri: "https://avatars.githubusercontent.com/u/20112017?v=4" }} />
-              <PhotoButton onPress={() => { }} >
+              <Photo source={{ uri: avatar }} />
+              <PhotoButton onPress={handleSelectAvatar} >
                 <Feather name="camera" size={24} color={theme.colors.shape} />
               </PhotoButton>
             </PhotoContainer>
@@ -87,6 +104,7 @@ export function Profile() {
                   placeholder='Nome'
                   autoCorrect={false}
                   defaultValue={user.name}
+                  onChangeText={setName}
                 />
                 <Input
                   iconName='mail'
@@ -98,6 +116,7 @@ export function Profile() {
                   placeholder='CNH'
                   keyboardType='numeric'
                   defaultValue={user.driver_license}
+                  onChangeText={setDriverLicense}
                 />
               </Section>
             :
