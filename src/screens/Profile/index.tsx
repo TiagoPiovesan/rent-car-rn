@@ -19,15 +19,17 @@ import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import Input from '../../components/Input';
-import { Keyboard, KeyboardAvoidingView } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import PasswordInput from '../../components/PasswordInput';
 import { useAuth } from '../../hooks/auth';
 import * as ImagePicker from 'expo-image-picker';
+import Button from '../../components/Button';
+import * as Yup from 'yup'
 
 export function Profile() {
-  const { user, signOut } = useAuth()
+  const { user, signOut, updateUser } = useAuth()
   const theme = useTheme()
   const navigation = useNavigation()
 
@@ -42,6 +44,38 @@ export function Profile() {
 
   function handleChangeForm(selected: 'dataEdit' | 'passwordEdit') {
     setOption(selected);
+  }
+
+  async function handleProfileUpdate() {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string().required("CNH é obrigatória"),
+        name: Yup.string().required("Nome é obrigatório"),
+      })
+
+      const data = { name, driverLicense }
+
+      await schema.validate(data);
+
+      await updateUser({
+        id: user.id,
+        user_id: user.user_id,
+        email: user.email,
+        name,
+        driver_license: driverLicense,
+        avatar,
+        token: user.token
+      })
+
+      Alert.alert("Perfil atualizado!")
+
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert("Opa", error.message)
+      } else {
+        Alert.alert("Não foi possível atualizar o perfil")
+      }
+    }
   }
 
   async function handleSelectAvatar() {
@@ -133,6 +167,10 @@ export function Profile() {
               </Section>
             }
 
+            <Button
+              title="Salvar alterações"
+              onPress={handleProfileUpdate}
+            />
           </Content>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
