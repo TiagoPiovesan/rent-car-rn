@@ -27,7 +27,7 @@ import { useAuth } from '../../hooks/auth';
 import * as ImagePicker from 'expo-image-picker';
 
 export function Profile() {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const theme = useTheme()
   const navigation = useNavigation()
 
@@ -38,10 +38,6 @@ export function Profile() {
 
   function handleBack() {
     navigation.goBack()
-  }
-
-  function handleSignOut() {
-
   }
 
   function handleChangeForm(selected: 'dataEdit' | 'passwordEdit') {
@@ -68,13 +64,13 @@ export function Profile() {
             <HeaderTop>
               <BackButton color={theme.colors.shape} onPress={handleBack} />
               <HeaderTitle>Editar Perfil</HeaderTitle>
-              <LogoutButton onPress={handleSignOut}>
+              <LogoutButton onPress={signOut}>
                 <Feather name="power" size={24} color={theme.colors.shape} />
               </LogoutButton>
             </HeaderTop>
 
             <PhotoContainer>
-              <Photo source={{ uri: avatar }} />
+              { !!avatar && <Photo source={{ uri: avatar }} /> }
               <PhotoButton onPress={handleSelectAvatar} >
                 <Feather name="camera" size={24} color={theme.colors.shape} />
               </PhotoButton>

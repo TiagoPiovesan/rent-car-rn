@@ -24,6 +24,7 @@ interface SignInCredentials {
 interface AuthContextData {
   user: User;
   signIn: (credentials: SignInCredentials) => Promise<void>;
+  signOut: () => Promise<void>;
   error: string | null;
 }
 
@@ -43,7 +44,6 @@ function AuthProvider({ children }: AuthProviderProps) {
       const { token, user } = response.data;
       api.defaults.headers.authorization = `Bearer ${token}`;
 
-      console.log(user)
       await database.write(async () => {
         const userCollection = await database.get<ModelUser>('users')
           .create(newUser => {
@@ -68,6 +68,20 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    try {
+
+      await database.write(async () => {
+        const userSelected = await database.get<ModelUser>('users').find(data.id)
+        await userSelected.destroyPermanently()
+      })
+
+      setData({} as User)
+     } catch (error) {
+      throw new Error(error)
+    }
+  }
+
   useEffect(() => {
     async function loadUserData() {
       const userCollection = database.get<ModelUser>('users')
@@ -83,7 +97,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{user: data, signIn, error}}>
+    <AuthContext.Provider value={{user: data, signIn, signOut, error}}>
       { children }
     </AuthContext.Provider>
   )
