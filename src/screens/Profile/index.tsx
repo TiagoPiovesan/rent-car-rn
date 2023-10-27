@@ -90,6 +90,27 @@ export function Profile() {
     }
   }
 
+  async function handleSignOut() {
+    Alert.alert("Tem certeza?", "Se você sair, precisará de internet para se conectar-se novamente.",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => { },
+        },
+        {
+          text: "Sair",
+          onPress: async () => {
+            try {
+              await signOut();
+            } catch (error) {
+              console.error("An error occurred while signing out:", error);
+            }
+          }
+        }
+      ]
+    )
+  }
+
   return (
     <Container>
       <KeyboardAvoidingView behavior='position'>
@@ -98,13 +119,13 @@ export function Profile() {
             <HeaderTop>
               <BackButton color={theme.colors.shape} onPress={handleBack} />
               <HeaderTitle>Editar Perfil</HeaderTitle>
-              <LogoutButton onPress={signOut}>
+              <LogoutButton onPress={handleSignOut}>
                 <Feather name="power" size={24} color={theme.colors.shape} />
               </LogoutButton>
             </HeaderTop>
 
             <PhotoContainer>
-              { !!avatar && <Photo source={{ uri: avatar }} /> }
+              {!!avatar && <Photo source={{ uri: avatar }} />}
               <PhotoButton onPress={handleSelectAvatar} >
                 <Feather name="camera" size={24} color={theme.colors.shape} />
               </PhotoButton>
@@ -121,13 +142,13 @@ export function Profile() {
               </Option>
               <Option
                 active={option === 'passwordEdit'}
-                onPress={() =>handleChangeForm('passwordEdit')}
+                onPress={() => handleChangeForm('passwordEdit')}
               >
                 <OptionTitle active={option === 'passwordEdit'}>Trocar senha</OptionTitle>
               </Option>
             </Options>
 
-            { option === 'dataEdit' ?
+            {option === 'dataEdit' ?
               <Section>
                 <Input
                   iconName='user'
@@ -149,7 +170,7 @@ export function Profile() {
                   onChangeText={setDriverLicense}
                 />
               </Section>
-            :
+              :
               <Section>
                 <PasswordInput
                   iconName='lock'
