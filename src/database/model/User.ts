@@ -1,5 +1,5 @@
 import { Model } from "@nozbe/watermelondb"
-import { field, text } from "@nozbe/watermelondb/decorators"
+import { field } from "@nozbe/watermelondb/decorators"
 
 class User extends Model {
   static table = "users"
@@ -21,7 +21,6 @@ class User extends Model {
 
   @field('token')
   token!: string;
-
 }
 
 export { User }

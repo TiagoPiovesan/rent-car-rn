@@ -48,7 +48,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       await database.write(async () => {
         const userCollection = await database.get<ModelUser>('users')
           .create(newUser => {
-            newUser.user_id = user.id,
+              newUser.user_id = user.id,
               newUser.email = user.email,
               newUser.name = user.name,
               newUser.driver_license = user.driver_license,
@@ -57,7 +57,8 @@ function AuthProvider({ children }: AuthProviderProps) {
           })
       })
 
-      setData({...user, token });
+      loadUserData()
+
     } catch (error) {
       if (error instanceof axios.AxiosError) {
         if (error.response.status === 500) {
@@ -71,7 +72,6 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     try {
-
       await database.write(async () => {
         const userSelected = await database.get<ModelUser>('users').find(data.id)
         await userSelected.destroyPermanently()
@@ -84,7 +84,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function updateUser(user: User) {
-    console.log(user)
     try {
       await database.write(async () => {
         const userSelected = await database.get<ModelUser>('users').find(data.id)
@@ -101,17 +100,18 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  useEffect(() => {
-    async function loadUserData() {
-      const userCollection = database.get<ModelUser>('users')
-      const response = await userCollection.query().fetch();
+  async function loadUserData() {
+    const userCollection = database.get<ModelUser>('users')
+    const response = await userCollection.query().fetch();
 
-      if (response.length > 0) {
-        const userData = response[0]._raw as unknown as User;
-        api.defaults.headers.authorization = `Bearer ${userData.token}`;
-        setData(userData)
-      }
+    if (response.length > 0) {
+      const userData = response[0]._raw as unknown as User;
+      api.defaults.headers.authorization = `Bearer ${userData.token}`;
+      setData(userData)
     }
+  }
+
+  useEffect(() => {
     loadUserData()
   }, [])
 
