@@ -13,12 +13,12 @@ import {
   CarImage,
 } from './styles'
 
-import { CarDTO } from '../../dtos/CarDTO'
+import { Car as CarModel } from '../../database/model/Car';
 import { getAcessotyIcon } from '../../utils/getAcessotyIcon';
 
 
 interface Props extends TouchableOpacityProps {
- data: CarDTO;
+ data: CarModel;
 }
 
 export default function Car({ data, ...rest }: Props) {

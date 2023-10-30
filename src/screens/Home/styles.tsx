@@ -1,7 +1,7 @@
 import { FlatList, TouchableOpacity } from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import styled from 'styled-components/native'
-import { CarDTO } from "../../dtos/CarDTO"
+import { Car as CarModel } from '../../database/model/Car';
 import { RectButton } from 'react-native-gesture-handler'
 
 export const Container = styled.View`
@@ -30,7 +30,7 @@ export const TotalCars = styled.Text`
 `
 
 // Forma de forçar a tipagem de uma Flat list
-export const CarList = styled(FlatList as new () => FlatList<CarDTO>).attrs({
+export const CarList = styled(FlatList as new () => FlatList<CarModel>).attrs({
   contentContainerStyle: {
     padding: 24
   },
