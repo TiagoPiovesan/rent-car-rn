@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { CarDTO } from "../../dtos/CarDTO"
 import { api } from "../../services/api"
 import {
   Container,
@@ -18,32 +17,37 @@ import {
   ArrowIcon
 } from "./styles"
 import { FlatList, StatusBar } from "react-native"
-import BackButton from "../../components/BackButton"
-import { useNavigation } from "@react-navigation/native"
-import { useTheme } from "styled-components"
 import Car from "../../components/Car"
 import Load from "../../components/Load"
+import { Car as CarModel } from '../../database/model/Car';
+import { format, parseISO } from "date-fns"
+import { useIsFocused } from "@react-navigation/native"
 
-interface CarProps {
-  id: string,
-  user_id: string,
-  car: CarDTO,
-  startDate: string,
-  endDate: string,
+interface DataProps {
+  id: string;
+  car: CarModel;
+  start_date: string;
+  end_date: string;
 }
 
 export function MyCars() {
-  const [cars, setCars] = useState<CarProps[]>([])
+  const [cars, setCars] = useState<DataProps[]>([])
   const [loading, setLoading] = useState(true)
-
-  const navigation = useNavigation()
-  const theme = useTheme()
+  const screenIsFocus = useIsFocused()
 
   useEffect(() => {
     async function fetchCars() {
       try {
-        const response = await api.get('/schedules_byuser?user_id=1');
-        setCars(response.data);
+        const response = await api.get('rentals');
+        const dataFormated = response.data.map((item: DataProps) => {
+          return {
+            id: item.id,
+            car: item.car,
+            start_date: format(parseISO(item.start_date), "dd/MM/yyyy"),
+            end_date: format(parseISO(item.end_date), "dd/MM/yyyy")
+          }
+        })
+        setCars(dataFormated);
       } catch (err) {
         console.log(err)
       } finally {
@@ -51,7 +55,7 @@ export function MyCars() {
       }
     }
     fetchCars()
-  }, [])
+  }, [screenIsFocus])
 
   return (
     <Container>
@@ -61,7 +65,6 @@ export function MyCars() {
           translucent
           backgroundColor="transparent"
         />
-        {/* <BackButton onPress={() => {navigation.goBack()}} color={ theme.colors.shape } /> */}
         <Title>
           Escolha uma {'\n'}
           data de início e {'\n'}
@@ -92,9 +95,9 @@ export function MyCars() {
                 <CarFooter>
                   <CarFooterTitle>Período</CarFooterTitle>
                   <CarFooterPeriod>
-                    <CarFooterDate>{item.startDate}</CarFooterDate>
+                    <CarFooterDate>{item.start_date}</CarFooterDate>
                     <ArrowIcon />
-                    <CarFooterDate>{item.endDate}</CarFooterDate>
+                    <CarFooterDate>{item.end_date}</CarFooterDate>
                   </CarFooterPeriod>
 
                 </CarFooter>
