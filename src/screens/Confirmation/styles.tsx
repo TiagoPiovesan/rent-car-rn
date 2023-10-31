@@ -16,7 +16,7 @@ export const Content = styled.View`
 `
 
 export const Title = styled.Text`
-  font-size: ${RFValue(30)}px;
+  font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.colors.shape };
   font-family: ${({ theme }) => theme.fonts.secondary_600 };
   margin-top: 40px;

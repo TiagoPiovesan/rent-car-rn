@@ -23,7 +23,6 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO"
-import { useTheme } from 'styled-components';
 import OfflineInfo from '../../components/OfflineInfo';
 
 
@@ -31,7 +30,6 @@ export function Home() {
   const [cars, setCars] = useState<CarModel[]>([])
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation();
-  const theme = useTheme();
   const netInfo = useNetInfo();
 
   async function offlineSynchronize() {
@@ -45,8 +43,6 @@ export function Home() {
       },
       pushChanges: async ({ changes }) => {
         const user = changes.users
-        console.log(">>")
-        console.log(user)
         if (user) {
           const response = await api.post(`/users/sync`, user).catch(console.log)
         }
@@ -133,7 +129,7 @@ export function Home() {
           keyExtractor={item => item.id}
           renderItem={
             ({ item }) =>
-              <Car data={ item } onPress={() => handleCarDetails(item)} />
+              <Car data={ item } onPress={() => handleCarDetails(item._raw)} />
           }
         />
       }
