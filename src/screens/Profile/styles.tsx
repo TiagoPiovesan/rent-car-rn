@@ -1,6 +1,6 @@
-import { SafeAreaView } from 'react-native'
 import { BorderlessButton, GestureHandlerRootView, RectButton, TouchableOpacity } from 'react-native-gesture-handler'
 import { RFValue } from 'react-native-responsive-fontsize'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { css } from 'styled-components';
 import styled from 'styled-components/native'
 

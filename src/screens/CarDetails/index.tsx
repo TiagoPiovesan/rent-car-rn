@@ -22,29 +22,53 @@ import {
 import Button from '../../components/Button';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CarDTO } from '../../dtos/CarDTO';
+import { Car as CarModel } from '../../database/model/Car';
 import { getAcessotyIcon } from '../../utils/getAcessotyIcon';
+import { useEffect, useState } from 'react';
+import { api } from '../../services/api';
+import { useNetInfo } from '@react-native-community/netinfo';
+import OfflineInfo from '../../components/OfflineInfo';
 
 interface Params {
   car: CarDTO;
 }
 
 export function CarDetails() {
+  const [carUpdated, setCarUpdated] = useState<CarDTO>({} as CarDTO)
   const navigation = useNavigation()
   const route = useRoute()
+  const netInfo = useNetInfo()
   const { car } = route.params as Params
 
   function handleConfirmRental(){
     navigation.navigate('Scheduling', { car })
   }
 
+  useEffect(() => {
+    async function feachCarUpdated() {
+      const response = await api.get(`/cars/${car.id}`)
+      setCarUpdated(response.data)
+    }
+
+    if (netInfo.isConnected === true) {
+      feachCarUpdated()
+    }
+  }, [netInfo.isConnected])
+
   return (
     <Container>
+      {
+        netInfo.isConnected === false &&
+        <OfflineInfo />
+      }
       <Header>
         <BackButton onPress={() => {navigation.goBack()}} />
       </Header>
 
       <CarImages>
-        <ImageSlider imagesUrl={car.photos} />
+        <ImageSlider imagesUrl={
+          !!carUpdated.photos ? carUpdated.photos : [{ id: car.thumbnail, photo: car.thumbnail }]
+        } />
       </CarImages>
 
       <Content>
@@ -55,13 +79,18 @@ export function CarDetails() {
           </Description>
           <Rent>
             <Period>{ car.period }</Period>
-            <Price> R$ {car.price}</Price>
+            <Price> R$
+              {
+                netInfo.isConnected === true ? car.price : "..."
+              }
+            </Price>
           </Rent>
         </Details>
 
-        <Acessories>
+        { !!carUpdated.accessories &&
+          <Acessories>
           {
-            car.accessories.map(acessory => (
+            carUpdated.accessories.map(acessory => (
               <Accessory
                 key={acessory.type}
                 name={acessory.name}
@@ -69,6 +98,7 @@ export function CarDetails() {
             ))
           }
         </Acessories>
+        }
 
         <About>
           { car.about }
@@ -76,7 +106,12 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Escolher período do aluguel" onPress={handleConfirmRental} />
+        <Button
+          title="Escolher período do aluguel"
+          onPress={handleConfirmRental}
+          enabled={netInfo.isConnected === true}
+        />
+
       </Footer>
 
     </Container>

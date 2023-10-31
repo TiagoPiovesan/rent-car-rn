@@ -8,7 +8,7 @@ import {
   MyCarsButton
 } from "./styles";
 import { Ionicons } from '@expo/vector-icons'
-import { Alert, StatusBar } from 'react-native'
+import { Alert, StatusBar, View } from 'react-native'
 import { RFValue } from "react-native-responsive-fontsize";
 import { useNetInfo } from '@react-native-community/netinfo';
 import { synchronize } from '@nozbe/watermelondb/sync'
@@ -19,11 +19,12 @@ import Logo from '../../assets/logo.svg';
 import Car from "../../components/Car";
 import Load from '../../components/Load'
 
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO"
 import { useTheme } from 'styled-components';
+import OfflineInfo from '../../components/OfflineInfo';
 
 
 export function Home() {
@@ -37,7 +38,6 @@ export function Home() {
     await synchronize({
       database,
       pullChanges: async ({ lastPulledAt }) => {
-
         const response = await api
           .get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
         const { changes, latestVersion } = response.data
@@ -45,6 +45,8 @@ export function Home() {
       },
       pushChanges: async ({ changes }) => {
         const user = changes.users
+        console.log(">>")
+        console.log(user)
         if (user) {
           const response = await api.post(`/users/sync`, user).catch(console.log)
         }
@@ -83,7 +85,7 @@ export function Home() {
     if (netInfo.isConnected === true) {
       offlineSynchronize();
     }
-  }, [netInfo.isConnected])
+  }, [netInfo.isConnected, useIsFocused()])
 
 
   // useEffect(() => {
@@ -118,6 +120,12 @@ export function Home() {
           </TotalCars>
         </HeaderContent>
       </Header>
+
+      { netInfo.isConnected === false &&
+        <View style={{ marginTop: 15 }}>
+          <OfflineInfo />
+        </View>
+      }
 
       { loading ? <Load /> :
         <CarList
