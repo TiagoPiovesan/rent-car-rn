@@ -1,4 +1,4 @@
-import Accessory from '../../components/Accessory';
+import { Accessory } from '../../components/Accessory';
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 import {
@@ -67,7 +67,7 @@ export function CarDetails() {
 
       <CarImages>
         <ImageSlider imagesUrl={
-          !!carUpdated.photos ? carUpdated.photos : [{ id: car.thumbnail, photo: car.thumbnail }]
+          !!carUpdated.photos ? carUpdated.photos : [{ id: 'Default', photo: car.thumbnail }]
         } />
       </CarImages>
 
